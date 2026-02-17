@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MinexPy Statistical Analysis GUI{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    {# Main site header and navigation shared by all pages. #}
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="brand">
+          <a href="{{ url_for('main.home') }}">MinexPy Statistical Analysis GUI</a>
+        </div>
+        <nav class="nav-links">
+          <a href="{{ url_for('main.home') }}">Home</a>
+          <a href="{{ url_for('main.about') }}">About</a>
+          <a href="{{ url_for('main.changelog') }}">Changelog</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

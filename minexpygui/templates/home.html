@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Home | MinexPy GUI{% endblock %}
+
+{% block content %}
+{# Intro panel for the current statistical analysis capability. #}
+<section class="hero-card">
+  <h1>Run Statistical Analysis with MinexPy</h1>
+  <p>
+    Upload a CSV or Excel file, select one or multiple element columns, and review
+    MinexPy statistical summaries directly in your browser.
+  </p>
+</section>
+
+{# Dataset upload form. #}
+<section class="panel">
+  <h2>Upload Data</h2>
+  <p class="muted">Accepted formats: .csv, .xlsx, .xls (max 20 MB by default).</p>
+  <form action="{{ url_for('analysis.upload_dataset') }}" method="post" enctype="multipart/form-data" class="upload-form">
+    <input type="file" name="data_file" accept=".csv,.xlsx,.xls" required>
+    <button type="submit">Upload and Preview</button>
+  </form>
+</section>
+
+{% if info_message %}
+<section class="panel panel-info">
+  <p>{{ info_message }}</p>
+</section>
+{% endif %}
+
+{% if error_message %}
+<section class="panel panel-error">
+  <strong>Could not process file:</strong>
+  <p>{{ error_message }}</p>
+</section>
+{% endif %}
+
+{% if dataset_id %}
+{# Uploaded file preview section. #}
+<section class="panel">
+  <h2>Uploaded Data Preview</h2>
+  {% if source_filename %}
+  <p class="muted">Source file: <code>{{ source_filename }}</code></p>
+  {% endif %}
+  {% if preview_row_count is not none %}
+  <p class="muted">Showing first {{ preview_row_count }} rows from your dataset.</p>
+  {% endif %}
+  {% if preview_table_html %}
+  <div class="table-wrap">
+    {{ preview_table_html|safe }}
+  </div>
+  {% endif %}
+</section>
+
+{# Statistical analysis controls for selecting one or many columns. #}
+<section class="panel">
+  <h2>Choose Columns for Statistical Analysis</h2>
+  <form action="{{ url_for('analysis.generate_statistics') }}" method="post" class="column-form">
+    <input type="hidden" name="dataset_id" value="{{ dataset_id }}">
+    <label for="column_names">Columns</label>
+    <select name="column_names" id="column_names" multiple required size="10">
+      {% for column_name in available_columns %}
+      <option value="{{ column_name }}" {% if column_name in selected_columns %}selected{% endif %}>{{ column_name }}</option>
+      {% endfor %}
+    </select>
+    <p class="muted form-help">Hold Ctrl (Windows/Linux) or Command (macOS) to select multiple columns.</p>
+    <button type="submit">Generate Statistical Analysis</button>
+  </form>
+</section>
+{% endif %}
+
+{% if result_table_html %}
+{# Final statistical result table and CSV download action. #}
+<section class="panel">
+  <h2>Statistical Analysis Results</h2>
+  {% if selected_columns %}
+  <p class="muted">Selected columns ({{ selected_columns|length }}): <code>{{ selected_columns|join(", ") }}</code></p>
+  {% endif %}
+  {% if source_filename %}
+  <p class="muted">Source file: <code>{{ source_filename }}</code></p>
+  {% endif %}
+  {% if result_row_count is not none %}
+  <p class="muted">{{ result_row_count }} rows in result table.</p>
+  {% endif %}
+
+  <div class="table-wrap">
+    {{ result_table_html|safe }}
+  </div>
+
+  {% if result_id %}
+  <div class="actions">
+    <a class="button-link" href="{{ url_for('analysis.download_statistics', result_id=result_id) }}">Download Results (CSV)</a>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

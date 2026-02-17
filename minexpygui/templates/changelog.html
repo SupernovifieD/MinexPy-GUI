@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Changelog | MinexPy GUI{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <h1>Changelog</h1>
+  <div class="markdown-content">
+    {{ changelog_html|safe }}
+  </div>
+</section>
+{% endblock %}

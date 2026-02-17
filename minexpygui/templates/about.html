@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}About | MinexPy GUI{% endblock %}
+
+{% block content %}
+<section class="panel">
+  {# Project purpose and relationship to the upstream MinexPy package. #}
+  <h1>About This Project</h1>
+  <p>
+    MinexPy-GUI is a local Flask interface for MinexPy. It helps researchers run geochemical
+    statistical workflows in the browser without writing Python scripts.
+  </p>
+  <p>
+    This release focuses on statistical analysis: upload data, preview rows, choose one or
+    more element-concentration columns, and generate tabular summary metrics.
+  </p>
+  <p>
+    Learn more about MinexPy:
+    <a href="https://github.com/SupernovifieD/MinexPy" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+    |
+    <a href="https://SupernovifieD.github.io/MinexPy/" target="_blank" rel="noopener noreferrer">Documentation</a>
+  </p>
+</section>
+{% endblock %}
